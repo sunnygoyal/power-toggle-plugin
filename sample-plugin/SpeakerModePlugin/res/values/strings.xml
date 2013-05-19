@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Speaker Mode: Power Toggles Plugin</string>
+    <string name="plugin_name">Speaker Mode</string>
+    <string name="service_name">Speaker Mode Service</string>
+    <string name="speaker_mode_running">Auto speaker mode active</string>
+    <string name="click_to_exit">Click to disable</string>
+
+</resources>
