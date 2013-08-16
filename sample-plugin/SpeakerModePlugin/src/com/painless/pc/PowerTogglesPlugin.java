@@ -1,7 +1,6 @@
 package com.painless.pc;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
@@ -9,6 +8,9 @@ public abstract class PowerTogglesPlugin extends BroadcastReceiver {
 
 	// Intent send by PowerToggles asking for a state change
 	public static final String ACTION_SET_STATE = "com.painless.pc.ACTION_SET_STATE";
+
+  // Intent send to PowerToggles notifying it of state changes
+  public static final String ACTION_STATE_CHANGED = "com.painless.pc.ACTION_STATE_CHANGED";
 
 	// Intent extra denoting the state. Value must be a boolean.
 	public static final String EXTRA_STATE = "state";
@@ -46,8 +48,7 @@ public abstract class PowerTogglesPlugin extends BroadcastReceiver {
 	 */
 	public static final void sendStateUpdate(Class<? extends PowerTogglesPlugin> pluginClass,
 			boolean newState, Context context) {
-		context.sendBroadcast(new Intent()
-			.setComponent(new ComponentName("com.painless.pc", "com.painless.pc.PluginUpdateReceiver"))
+		context.sendBroadcast(new Intent(ACTION_STATE_CHANGED)
 			.putExtra(EXTRA_VARID, pluginClass.getName())
 			.putExtra(EXTRA_STATE, newState));
 	}
