@@ -17,74 +17,74 @@ import android.os.IBinder;
 
 public class SpeakerService extends Service {
 
-	public static final String STOP_INTENT = "com.painless.smp.STOP_SERVICE";
-	private static final int NOTIFICATION_ID = 10;
+    public static final String STOP_INTENT = "com.painless.smp.STOP_SERVICE";
+    private static final int NOTIFICATION_ID = 10;
 
-	public static boolean sIsRunning = false;
+    public static boolean sIsRunning = false;
 
-	private NotificationManager mNotificationManager;
-	private AudioManager mAudioManager;
+    private NotificationManager mNotificationManager;
+    private AudioManager mAudioManager;
 
-	private final BroadcastReceiver mCallReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mCallReceiver = new BroadcastReceiver() {
 
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			String stateExtra = intent.getStringExtra(EXTRA_STATE);
-			if (EXTRA_STATE_OFFHOOK.equals(stateExtra) || EXTRA_STATE_RINGING.equals(stateExtra)) {
-				mAudioManager.setSpeakerphoneOn(true);
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String stateExtra = intent.getStringExtra(EXTRA_STATE);
+            if (EXTRA_STATE_OFFHOOK.equals(stateExtra) || EXTRA_STATE_RINGING.equals(stateExtra)) {
+                mAudioManager.setSpeakerphoneOn(true);
 
-				new Thread() {
+                new Thread() {
 
-					@Override
-					public void run() {
-						try {
-							Thread.sleep(500L);
-						} catch (InterruptedException e) {
-							// Ignore
-						}
-						mAudioManager.setSpeakerphoneOn(true);
+                    @Override
+                    public void run() {
+                        try {
+                            Thread.sleep(500L);
+                        } catch (InterruptedException e) {
+                            // Ignore
+                        }
+                        mAudioManager.setSpeakerphoneOn(true);
 
-					}
-				}.run();
-			}
-		}
-	};
+                    }
+                }.run();
+            }
+        }
+    };
 
-	@SuppressWarnings("deprecation")
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+    @SuppressWarnings("deprecation")
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-		registerReceiver(mCallReceiver, new IntentFilter(ACTION_PHONE_STATE_CHANGED));
+        registerReceiver(mCallReceiver, new IntentFilter(ACTION_PHONE_STATE_CHANGED));
 
-		Notification n = new Notification();
-		n.icon = R.drawable.notify_speaker_icon;
-		n.setLatestEventInfo(this, getString(R.string.speaker_mode_running),
-				getString(R.string.click_to_exit),
-				PendingIntent.getBroadcast(this, 0, new Intent(STOP_INTENT), 0));
-		n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
-		mNotificationManager.notify(NOTIFICATION_ID, n);
+        Notification n = new Notification();
+        n.icon = R.drawable.notify_speaker_icon;
+        n.setLatestEventInfo(this, getString(R.string.speaker_mode_running),
+                getString(R.string.click_to_exit),
+                PendingIntent.getBroadcast(this, 0, new Intent(STOP_INTENT), 0));
+        n.flags = Notification.FLAG_ONGOING_EVENT | Notification.FLAG_NO_CLEAR;
+        mNotificationManager.notify(NOTIFICATION_ID, n);
 
-		// Update the widget with state=true
-		ToggleReceiver.sendStateUpdate(ToggleReceiver.class, true, this);
-		sIsRunning = true;
-	}
+        // Update the widget with state=true
+        ToggleReceiver.sendStateUpdate(ToggleReceiver.class, true, this);
+        sIsRunning = true;
+    }
 
-	@Override
-	public void onDestroy() {
-		sIsRunning = false;
-		mNotificationManager.cancel(NOTIFICATION_ID);
-		unregisterReceiver(mCallReceiver);
+    @Override
+    public void onDestroy() {
+        sIsRunning = false;
+        mNotificationManager.cancel(NOTIFICATION_ID);
+        unregisterReceiver(mCallReceiver);
 
-		// Update the widget with state=false
-		ToggleReceiver.sendStateUpdate(ToggleReceiver.class, false, this);
-		super.onDestroy();
-	}
+        // Update the widget with state=false
+        ToggleReceiver.sendStateUpdate(ToggleReceiver.class, false, this);
+        super.onDestroy();
+    }
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		return null;
-	}
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
 }
