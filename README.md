@@ -14,6 +14,11 @@ Plugins for the can add to the list of available toggle functions.
     * Define a label and icon for the receiver.
     * Optionally add a permission attribute (`android:permission="com.painless.pc.permission.CONTROL_PLUGIN"`) to the receiver so that only Power Toggles can call the receiver.
 
+
+### Customizable plugins
+Plugins can also expose customization action. For details, refer:
+https://github.com/sunnygoyal/power-toggle-plugin/tree/master/sample-plugin/ConfigurableToastPlugin
+
 ### How it works
 When a user click the toggle button, the app calls the corresponding receiver with the desired new state. The state of the toggle is set to busy.
 Once the plugin finishes its processing, it calls `sendStateUpdate` to notify Power Toggles that the processing is complete and sends the new state of the plugin. The new state is same as the desired state in most cases, but in can be different if the plugin failed in the task for some reason.
