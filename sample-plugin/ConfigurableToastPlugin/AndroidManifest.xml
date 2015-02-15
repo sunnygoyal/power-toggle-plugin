@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.painless.tmp"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="21" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name" >
+        <receiver
+            android:name=".ToggleReceiver"
+            android:exported="true"
+            android:icon="@drawable/ic_toggle"
+            android:label="@string/plugin_name"
+            android:permission="com.painless.pc.permission.CONTROL_PLUGIN" >
+            <meta-data
+                android:name="com.painless.pc.CONFIG"
+                android:value="com.painless.tmp.ConfigActivity" />
+
+            <intent-filter>
+                <action android:name="com.painless.pc.ACTION_SET_STATE" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".ConfigActivity"
+            android:exported="true"
+            android:label="@string/label_config"
+            android:theme="@android:style/Theme.DeviceDefault.Dialog" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

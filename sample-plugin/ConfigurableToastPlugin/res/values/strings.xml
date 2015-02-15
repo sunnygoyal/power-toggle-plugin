@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">ConfigurableToast: Power Toggles Plugin</string>
+    <string name="plugin_name">Show toast</string>
+    <string name="label_config">Configure toggle</string>
+    <string name="label_message">Enter message</string>
+
+</resources>
